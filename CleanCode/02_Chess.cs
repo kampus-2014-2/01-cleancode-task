@@ -6,30 +6,29 @@
 
 		public Chess(Board b)
 		{
-			this.b = b;
+		this.b = b;
 		}
 
-		public string getWhiteStatus()
-		{
-			bool bad = checkForWhite();
-			bool ok = false;
+		public string getWhiteStatus() {
+			bool bad=checkForWhite();
+			bool ok=  false;
 			foreach (Loc loc1 in b.Figures(Cell.White))
 			{
-				foreach (Loc loc2 in b.Get(loc1).Figure.Moves(loc1, b))
-				{
-					Cell old_dest = b.PerformMove(loc1, loc2);
-					if (!checkForWhite())
-						ok = true;
-					b.PerformUndoMove(loc1, loc2, old_dest);
+				foreach (Loc loc2 in b.Get(loc1).Figure.Moves(loc1, b)){
+				Cell old_dest = b.PerformMove(loc1, loc2);
+				if (!checkForWhite( ))
+					ok = true;
+				b.PerformUndoMove(loc1, loc2, old_dest);
 				}
+				
+				
+				
 			}
 			if (bad)
 				if (ok)
 					return "check";
-				else
-					return "mate";
-			if (ok)
-				return "ok";
+				else return "mate";
+				if (ok)	return "ok";
 			return "stalemate";
 		}
 

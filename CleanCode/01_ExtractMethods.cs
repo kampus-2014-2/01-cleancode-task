@@ -7,25 +7,25 @@ namespace CleanCode
 {
 	public static class RefactorMethod
 	{
-		private static void SaveData(string s, byte[] d)
+		private static void SaveData(string name, byte[] data)
 		{
-            SaveFile(s, d);
-            SaveFile(Path.ChangeExtension(s, "bkp"), d);
-            AddTime(s);
+            SaveFile(name, data);
+            SaveFile(Path.ChangeExtension(name, "bkp"), data);
+            AddTime(name);
 		}
 
-	    private static void SaveFile(string s, byte[] d)
+        private static void SaveFile(string name, byte[] data)
 	    {
-	        var fs1 = new FileStream(s, FileMode.OpenOrCreate);
-            fs1.Write(d, 0, d.Length);
-            fs1.Close();
+            var file = new FileStream(name, FileMode.OpenOrCreate);
+            file.Write(data, 0, data.Length);
+            file.Close();
 	    }
 
-	    private static void AddTime(string s)
+        private static void AddTime(string name)
 	    {
-            string tf = s + ".time";
-            var t = BitConverter.GetBytes(DateTime.Now.Ticks);
-            SaveFile(tf, t);
+            string timeFile = name + ".time";
+            var timeStamp = BitConverter.GetBytes(DateTime.Now.Ticks);
+            SaveFile(timeFile, timeStamp);
 	    }
 	}
 }

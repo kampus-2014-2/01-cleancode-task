@@ -1,30 +1,31 @@
 ﻿using System;
+using System.CodeDom;
+using System.Diagnostics;
 using System.IO;
 
 namespace CleanCode
 {
 	public static class RefactorMethod
 	{
-		private static void SaveData(string s, byte[] d)
+		private static void SaveData(string name, byte[] data)
 		{
-			//open files
-			var fs1 = new FileStream(s, FileMode.OpenOrCreate);
-			var fs2 = new FileStream(Path.ChangeExtension(s, "bkp"), FileMode.OpenOrCreate);
-
-			// write data
-			fs1.Write(d, 0, d.Length);
-			fs2.Write(d, 0, d.Length);
-
-			// close files
-			fs1.Close();
-			fs2.Close();
-
-			// save last-write time
-			string tf = s + ".time";
-			var fs3 = new FileStream(tf, FileMode.OpenOrCreate);
-			var t = BitConverter.GetBytes(DateTime.Now.Ticks);
-			fs3.Write(t, 0, t.Length);
-			fs3.Close();
+            SaveFile(name, data);
+            SaveFile(Path.ChangeExtension(name, "bkp"), data);
+            AddTime(name);
 		}
+
+        private static void SaveFile(string name, byte[] data)
+	    {
+            var file = new FileStream(name, FileMode.OpenOrCreate);
+            file.Write(data, 0, data.Length);
+            file.Close();
+	    }
+
+        private static void AddTime(string name)
+	    {
+            string timeFile = name + ".time";
+            var timeStamp = BitConverter.GetBytes(DateTime.Now.Ticks);
+            SaveFile(timeFile, timeStamp);
+	    }
 	}
 }
